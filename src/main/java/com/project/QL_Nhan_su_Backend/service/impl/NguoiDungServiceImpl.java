@@ -1,0 +1,76 @@
+package com.project.QL_Nhan_su_Backend.service.impl;
+
+import com.project.QL_Nhan_su_Backend.dto.NguoiDungDto;
+import com.project.QL_Nhan_su_Backend.entity.NguoiDung;
+import com.project.QL_Nhan_su_Backend.entity.NhanVien;
+import com.project.QL_Nhan_su_Backend.mapper.NguoiDungMapper;
+import com.project.QL_Nhan_su_Backend.repository.NguoiDungRepository;
+import com.project.QL_Nhan_su_Backend.service.NguoiDungService;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class NguoiDungServiceImpl implements NguoiDungService {
+
+    private NguoiDungRepository nguoiDungRepository;
+
+    public NguoiDungServiceImpl(NguoiDungRepository nguoiDungRepository) {
+        this.nguoiDungRepository = nguoiDungRepository;
+    }
+
+    @Override
+    public NguoiDungDto createNguoiDung(NguoiDungDto nguoiDungDto) {
+        NguoiDung nguoiDung = NguoiDungMapper.mapToNguoiDung(nguoiDungDto);
+        nguoiDung.setThoiGianTao(LocalDateTime.now());
+        NguoiDung savedNguoiDung = nguoiDungRepository.save(nguoiDung);
+
+        return NguoiDungMapper.mapToNguoiDungDto(savedNguoiDung);
+    }
+
+    @Override
+    public List<NguoiDungDto> getAllNguoiDung() {
+        List<NguoiDung> nguoiDungs = nguoiDungRepository.findAll();
+
+        return nguoiDungs.stream()
+                .map(NguoiDungMapper::mapToNguoiDungDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public NguoiDungDto getNguoiDungById(Long id) {
+        NguoiDung nguoiDung = nguoiDungRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("NguoiDung not found"));
+
+        return NguoiDungMapper.mapToNguoiDungDto(nguoiDung);
+    }
+
+    @Override
+    public NguoiDungDto updateNguoiDung(Long id, NguoiDungDto nguoiDungDto) {
+        NguoiDung nguoiDung = nguoiDungRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("NguoiDung not found"));
+
+        NhanVien nhanVien = new NhanVien();
+        nhanVien.setMaNhanVien(nguoiDungDto.getMaNhanVien());
+        nguoiDung.setMaNhanVien(nhanVien.getMaNhanVien() != null ? nhanVien : null);
+
+        nguoiDung.setTenNguoiDung(nguoiDungDto.getTenNguoiDung());
+        nguoiDung.setMatKhau(nguoiDungDto.getMatKhau());
+        nguoiDung.setVaiTro(nguoiDungDto.getVaiTro());
+        nguoiDung.setThoiGianCapNhat(LocalDateTime.now());
+        NguoiDung savedNguoiDung = nguoiDungRepository.save(nguoiDung);
+
+        return NguoiDungMapper.mapToNguoiDungDto(savedNguoiDung);
+    }
+
+    @Override
+    public void deleteNguoiDung(Long id) {
+        NguoiDung nguoiDung = nguoiDungRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("NguoiDung not found"));
+
+        nguoiDungRepository.delete(nguoiDung);
+    }
+}
