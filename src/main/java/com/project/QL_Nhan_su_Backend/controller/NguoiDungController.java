@@ -56,4 +56,18 @@ public class NguoiDungController {
 
         return ResponseEntity.ok(Map.of("message", "NguoiDung deleted successfully"));
     }
+
+    // http://localhost:8080/api/nguoiDung/login
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+        String tenNguoiDung = loginRequest.get("tenNguoiDung");
+        String matKhau = loginRequest.get("matKhau");
+
+        try {
+            NguoiDungDto nguoiDungDto = nguoiDungService.login(tenNguoiDung, matKhau);
+            return ResponseEntity.ok(nguoiDungDto);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
+        }
+    }
 }

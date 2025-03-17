@@ -73,4 +73,16 @@ public class NguoiDungServiceImpl implements NguoiDungService {
 
         nguoiDungRepository.delete(nguoiDung);
     }
+
+    @Override
+    public NguoiDungDto login(String tenNguoiDung, String matKhau) {
+        NguoiDung nguoiDung = nguoiDungRepository.findByTenNguoiDung(tenNguoiDung)
+                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+
+        if (!nguoiDung.getMatKhau().equals(matKhau)) {
+            throw new RuntimeException("Invalid username or password");
+        }
+
+        return NguoiDungMapper.mapToNguoiDungDto(nguoiDung);
+    }
 }

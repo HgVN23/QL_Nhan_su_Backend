@@ -15,4 +15,5 @@ public interface NguoiDungService {
 
     void deleteNguoiDung(Long id);
 
+    NguoiDungDto login(String tenNguoiDung, String matKhau);
 }
