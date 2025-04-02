@@ -22,10 +22,10 @@ public class NguoiDung {
     private Long maNguoiDung;
 
     @OneToOne
-    @JoinColumn(name = "ma_nhan_vien", unique = true)
+    @JoinColumn(name = "ma_nhan_vien")
     private NhanVien maNhanVien;
 
-    @Column(name = "ten_nguoi_dung", unique = true, nullable = false)
+    @Column(name = "ten_nguoi_dung", nullable = false)
     private String tenNguoiDung;
 
     @Column(name = "mat_khau", nullable = false)

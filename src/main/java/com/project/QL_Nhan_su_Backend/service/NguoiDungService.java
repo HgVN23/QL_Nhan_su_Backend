@@ -16,4 +16,8 @@ public interface NguoiDungService {
     void deleteNguoiDung(Long id);
 
     NguoiDungDto login(String tenNguoiDung, String matKhau);
+
+    List<NguoiDungDto> getNguoiDungWithPagination(int offset, int limit);
+
+    long getMaxNguoiDung();
 }

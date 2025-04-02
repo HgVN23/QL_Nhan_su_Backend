@@ -6,6 +6,9 @@ import com.project.QL_Nhan_su_Backend.entity.NhanVien;
 import com.project.QL_Nhan_su_Backend.mapper.NguoiDungMapper;
 import com.project.QL_Nhan_su_Backend.repository.NguoiDungRepository;
 import com.project.QL_Nhan_su_Backend.service.NguoiDungService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -84,5 +87,19 @@ public class NguoiDungServiceImpl implements NguoiDungService {
         }
 
         return NguoiDungMapper.mapToNguoiDungDto(nguoiDung);
+    }
+
+    @Override
+    public List<NguoiDungDto> getNguoiDungWithPagination(int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        Page<NguoiDung> nguoiDungPage = nguoiDungRepository.findAll(pageable);
+
+        return nguoiDungPage.stream()
+                .map(NguoiDungMapper::mapToNguoiDungDto)
+                .collect(Collectors.toList());
+    }
+
+    public long getMaxNguoiDung() {
+        return nguoiDungRepository.count();
     }
 }

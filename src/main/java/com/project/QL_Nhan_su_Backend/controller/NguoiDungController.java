@@ -70,4 +70,20 @@ public class NguoiDungController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
         }
     }
+
+    // http://localhost:8080/api/nguoiDung/paged?offset=1&limit=5
+    @GetMapping("/paged")
+    public ResponseEntity<List<NguoiDungDto>> getNguoiDungWithPagination(
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        List<NguoiDungDto> nguoiDungs = nguoiDungService.getNguoiDungWithPagination(offset, limit);
+        return ResponseEntity.ok(nguoiDungs);
+    }
+
+    // http://localhost:8080/api/nguoiDung/getMax
+    @GetMapping("/getMax")
+    public long getMaxNguoiDung() {
+        return nguoiDungService.getMaxNguoiDung();
+    }
 }
