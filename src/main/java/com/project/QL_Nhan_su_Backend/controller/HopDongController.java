@@ -1,6 +1,7 @@
 package com.project.QL_Nhan_su_Backend.controller;
 
 import com.project.QL_Nhan_su_Backend.dto.HopDongDto;
+import com.project.QL_Nhan_su_Backend.dto.HopDongDto;
 import com.project.QL_Nhan_su_Backend.service.HopDongService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,22 @@ public class HopDongController {
         hopDongService.deleteHopDong(id);
 
         return ResponseEntity.ok(Map.of("message", "HopDong deleted successfully"));
+    }
+
+    // http://localhost:8080/api/hopDong/paged?offset=1&limit=5
+    @GetMapping("/paged")
+    public ResponseEntity<List<HopDongDto>> getHopDongWithPagination(
+            @RequestParam(required = false) String tenHopDong,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        List<HopDongDto> hopDongs = hopDongService.getHopDongWithPagination(offset, limit);
+        return ResponseEntity.ok(hopDongs);
+    }
+
+    // http://localhost:8080/api/hopDong/getMax
+    @GetMapping("/getMax")
+    public long getMaxHopDong() {
+        return hopDongService.getMaxHopDong();
     }
 }
