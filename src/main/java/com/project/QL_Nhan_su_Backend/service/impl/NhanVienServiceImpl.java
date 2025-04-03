@@ -1,10 +1,16 @@
 package com.project.QL_Nhan_su_Backend.service.impl;
 
 import com.project.QL_Nhan_su_Backend.dto.NhanVienDto;
+import com.project.QL_Nhan_su_Backend.dto.NhanVienDto;
 import com.project.QL_Nhan_su_Backend.entity.NhanVien;
+import com.project.QL_Nhan_su_Backend.entity.NhanVien;
+import com.project.QL_Nhan_su_Backend.mapper.NhanVienMapper;
 import com.project.QL_Nhan_su_Backend.mapper.NhanVienMapper;
 import com.project.QL_Nhan_su_Backend.repository.NhanVienRepository;
 import com.project.QL_Nhan_su_Backend.service.NhanVienService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -73,5 +79,25 @@ public class NhanVienServiceImpl implements NhanVienService {
                 .orElseThrow(() -> new RuntimeException("NhanVien not found"));
 
         nhanVienRepository.delete(nhanVien);
+    }
+
+    @Override
+    public List<NhanVienDto> getNhanVienWithPagination(String hoTen, int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        Page<NhanVien> nhanVienPage;
+
+        if (hoTen != null && !hoTen.isEmpty()) {
+            nhanVienPage = nhanVienRepository.findByHoTenContainingIgnoreCase(hoTen, pageable);
+        } else {
+            nhanVienPage = nhanVienRepository.findAll(pageable);
+        }
+
+        return nhanVienPage.stream()
+                .map(NhanVienMapper::mapToNhanVienDto)
+                .collect(Collectors.toList());
+    }
+
+    public long getMaxNhanVien() {
+        return nhanVienRepository.count();
     }
 }

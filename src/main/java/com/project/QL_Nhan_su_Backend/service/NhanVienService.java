@@ -15,4 +15,7 @@ public interface NhanVienService {
 
     void deleteNhanVien(Long id);
 
+    List<NhanVienDto> getNhanVienWithPagination(String hoTen, int offset, int limit);
+
+    public long getMaxNhanVien();
 }

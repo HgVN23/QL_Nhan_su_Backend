@@ -105,7 +105,6 @@ public class NguoiDungServiceImpl implements NguoiDungService {
                 .collect(Collectors.toList());
     }
 
-
     public long getMaxNguoiDung() {
         return nguoiDungRepository.count();
     }

@@ -82,7 +82,6 @@ public class NguoiDungController {
         return ResponseEntity.ok(nguoiDungs);
     }
 
-
     // http://localhost:8080/api/nguoiDung/getMax
     @GetMapping("/getMax")
     public long getMaxNguoiDung() {

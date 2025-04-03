@@ -1,6 +1,7 @@
 package com.project.QL_Nhan_su_Backend.controller;
 
 import com.project.QL_Nhan_su_Backend.dto.NhanVienDto;
+import com.project.QL_Nhan_su_Backend.dto.NhanVienDto;
 import com.project.QL_Nhan_su_Backend.service.NhanVienService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +56,22 @@ public class NhanVienController {
         nhanVienService.deleteNhanVien(id);
 
         return ResponseEntity.ok(Map.of("message", "NhanVien deleted successfully"));
+    }
+
+    // http://localhost:8080/api/nhanVien/paged?offset=1&limit=5
+    @GetMapping("/paged")
+    public ResponseEntity<List<NhanVienDto>> getNhanVienWithPagination(
+            @RequestParam(required = false) String hoTen,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        List<NhanVienDto> nhanViens = nhanVienService.getNhanVienWithPagination(hoTen, offset, limit);
+        return ResponseEntity.ok(nhanViens);
+    }
+
+    // http://localhost:8080/api/nhanVien/getMax
+    @GetMapping("/getMax")
+    public long getMaxNhanVien() {
+        return nhanVienService.getMaxNhanVien();
     }
 }
