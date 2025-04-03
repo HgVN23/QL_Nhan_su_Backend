@@ -17,7 +17,7 @@ public interface NguoiDungService {
 
     NguoiDungDto login(String tenNguoiDung, String matKhau);
 
-    List<NguoiDungDto> getNguoiDungWithPagination(int offset, int limit);
+    List<NguoiDungDto> getNguoiDungWithPagination(String tenNguoiDung, int offset, int limit);
 
     long getMaxNguoiDung();
 }

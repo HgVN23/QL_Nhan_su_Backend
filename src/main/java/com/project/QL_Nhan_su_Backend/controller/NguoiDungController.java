@@ -74,12 +74,14 @@ public class NguoiDungController {
     // http://localhost:8080/api/nguoiDung/paged?offset=1&limit=5
     @GetMapping("/paged")
     public ResponseEntity<List<NguoiDungDto>> getNguoiDungWithPagination(
+            @RequestParam(required = false) String tenNguoiDung,
             @RequestParam(defaultValue = "0") int offset,
             @RequestParam(defaultValue = "10") int limit) {
 
-        List<NguoiDungDto> nguoiDungs = nguoiDungService.getNguoiDungWithPagination(offset, limit);
+        List<NguoiDungDto> nguoiDungs = nguoiDungService.getNguoiDungWithPagination(tenNguoiDung, offset, limit);
         return ResponseEntity.ok(nguoiDungs);
     }
+
 
     // http://localhost:8080/api/nguoiDung/getMax
     @GetMapping("/getMax")

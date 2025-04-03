@@ -90,14 +90,21 @@ public class NguoiDungServiceImpl implements NguoiDungService {
     }
 
     @Override
-    public List<NguoiDungDto> getNguoiDungWithPagination(int offset, int limit) {
+    public List<NguoiDungDto> getNguoiDungWithPagination(String tenNguoiDung, int offset, int limit) {
         Pageable pageable = PageRequest.of(offset, limit);
-        Page<NguoiDung> nguoiDungPage = nguoiDungRepository.findAll(pageable);
+        Page<NguoiDung> nguoiDungPage;
+
+        if (tenNguoiDung != null && !tenNguoiDung.isEmpty()) {
+            nguoiDungPage = nguoiDungRepository.findByTenNguoiDungContainingIgnoreCase(tenNguoiDung, pageable);
+        } else {
+            nguoiDungPage = nguoiDungRepository.findAll(pageable);
+        }
 
         return nguoiDungPage.stream()
                 .map(NguoiDungMapper::mapToNguoiDungDto)
                 .collect(Collectors.toList());
     }
+
 
     public long getMaxNguoiDung() {
         return nguoiDungRepository.count();
