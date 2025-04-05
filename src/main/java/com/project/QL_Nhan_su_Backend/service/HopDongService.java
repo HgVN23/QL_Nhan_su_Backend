@@ -2,6 +2,7 @@ package com.project.QL_Nhan_su_Backend.service;
 
 import com.project.QL_Nhan_su_Backend.dto.HopDongDto;
 import com.project.QL_Nhan_su_Backend.dto.HopDongDto;
+import com.project.QL_Nhan_su_Backend.entity.NhanVien;
 
 import java.util.List;
 
@@ -19,4 +20,9 @@ public interface HopDongService {
     List<HopDongDto> getHopDongWithPagination(int offset, int limit);
 
     long getMaxHopDong();
+
+    List<HopDongDto> getHopDongsByMaNhanVien(Long maNhanVien);
+
+    long getMaxHopDongByMaNhanVien(NhanVien maNhanVien);
+
 }

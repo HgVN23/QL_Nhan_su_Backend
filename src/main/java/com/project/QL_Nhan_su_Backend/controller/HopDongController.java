@@ -2,6 +2,7 @@ package com.project.QL_Nhan_su_Backend.controller;
 
 import com.project.QL_Nhan_su_Backend.dto.HopDongDto;
 import com.project.QL_Nhan_su_Backend.dto.HopDongDto;
+import com.project.QL_Nhan_su_Backend.entity.NhanVien;
 import com.project.QL_Nhan_su_Backend.service.HopDongService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -74,4 +75,18 @@ public class HopDongController {
     public long getMaxHopDong() {
         return hopDongService.getMaxHopDong();
     }
+
+    // http://localhost:8080/api/hopDong/maNhanVien/1
+    @GetMapping("/maNhanVien/{maNhanVien}")
+    public ResponseEntity<List<HopDongDto>> getByMaNhanVien(@PathVariable Long maNhanVien) {
+        List<HopDongDto> hopDongs = hopDongService.getHopDongsByMaNhanVien(maNhanVien);
+        return ResponseEntity.ok(hopDongs);
+    }
+
+    // http://localhost:8080/api/hopDong/getMax/maNhanVien/1
+    @GetMapping("/getMax/maNhanVien/{maNhanVien}")
+    public long getMaxHopDongByMaNhanVien(@PathVariable NhanVien maNhanVien) {
+        return hopDongService.getMaxHopDongByMaNhanVien(maNhanVien);
+    }
+
 }

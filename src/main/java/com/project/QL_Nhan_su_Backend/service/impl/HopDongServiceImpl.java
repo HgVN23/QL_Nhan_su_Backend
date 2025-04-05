@@ -95,4 +95,18 @@ public class HopDongServiceImpl implements HopDongService {
     public long getMaxHopDong() {
         return hopDongRepository.count();
     }
+
+    @Override
+    public List<HopDongDto> getHopDongsByMaNhanVien(Long maNhanVien) {
+        List<HopDong> hopDongs = hopDongRepository.findAllByMaNhanVien_MaNhanVien(maNhanVien);
+
+        return hopDongs.stream()
+                .map(HopDongMapper::mapToHopDongDto)
+                .collect(Collectors.toList());
+    }
+
+    public long getMaxHopDongByMaNhanVien(NhanVien maNhanVien) {
+        return hopDongRepository.countByMaNhanVien(maNhanVien);
+    }
+
 }
