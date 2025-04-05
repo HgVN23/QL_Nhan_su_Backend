@@ -1,6 +1,9 @@
 package com.project.QL_Nhan_su_Backend.controller;
 
 import com.project.QL_Nhan_su_Backend.dto.BaoCaoDto;
+import com.project.QL_Nhan_su_Backend.dto.BaoCaoDto;
+import com.project.QL_Nhan_su_Backend.dto.BaoCaoDto;
+import com.project.QL_Nhan_su_Backend.entity.NhanVien;
 import com.project.QL_Nhan_su_Backend.service.BaoCaoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -55,5 +58,35 @@ public class BaoCaoController {
         baoCaoService.deleteBaoCao(id);
 
         return ResponseEntity.ok(Map.of("message", "BaoCao deleted successfully"));
+    }
+
+    // http://localhost:8080/api/baoCao/paged?offset=1&limit=5
+    @GetMapping("/paged")
+    public ResponseEntity<List<BaoCaoDto>> getBaoCaoWithPagination(
+            @RequestParam(required = false) String tenBaoCao,
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        List<BaoCaoDto> baoCaos = baoCaoService.getBaoCaoWithPagination(offset, limit);
+        return ResponseEntity.ok(baoCaos);
+    }
+
+    // http://localhost:8080/api/baoCao/getMax
+    @GetMapping("/getMax")
+    public long getMaxBaoCao() {
+        return baoCaoService.getMaxBaoCao();
+    }
+    
+    // http://localhost:8080/api/baoCao/maNhanVien/1
+    @GetMapping("/maNhanVien/{maNhanVien}")
+    public ResponseEntity<List<BaoCaoDto>> getByMaNhanVien(@PathVariable Long maNhanVien) {
+        List<BaoCaoDto> baoCaos = baoCaoService.getBaoCaosByMaNhanVien(maNhanVien);
+        return ResponseEntity.ok(baoCaos);
+    }
+
+    // http://localhost:8080/api/baoCao/getMax/maNhanVien/1
+    @GetMapping("/getMax/maNhanVien/{maNhanVien}")
+    public long getMaxBaoCaoByMaNhanVien(@PathVariable NhanVien maNhanVien) {
+        return baoCaoService.getMaxBaoCaoByMaNhanVien(maNhanVien);
     }
 }

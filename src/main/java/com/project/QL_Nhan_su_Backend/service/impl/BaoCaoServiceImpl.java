@@ -1,11 +1,17 @@
 package com.project.QL_Nhan_su_Backend.service.impl;
 
 import com.project.QL_Nhan_su_Backend.dto.BaoCaoDto;
+import com.project.QL_Nhan_su_Backend.dto.BaoCaoDto;
+import com.project.QL_Nhan_su_Backend.entity.BaoCao;
 import com.project.QL_Nhan_su_Backend.entity.BaoCao;
 import com.project.QL_Nhan_su_Backend.entity.NhanVien;
 import com.project.QL_Nhan_su_Backend.mapper.BaoCaoMapper;
+import com.project.QL_Nhan_su_Backend.mapper.BaoCaoMapper;
 import com.project.QL_Nhan_su_Backend.repository.BaoCaoRepository;
 import com.project.QL_Nhan_su_Backend.service.BaoCaoService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -71,5 +77,31 @@ public class BaoCaoServiceImpl implements BaoCaoService {
                 .orElseThrow(() -> new RuntimeException("BaoCao not found"));
 
         baoCaoRepository.delete(baoCao);
+    }
+    @Override
+    public List<BaoCaoDto> getBaoCaoWithPagination(int offset, int limit) {
+        Pageable pageable = PageRequest.of(offset, limit);
+        Page<BaoCao> baoCaoPage = baoCaoRepository.findAll(pageable);
+
+        return baoCaoPage.stream()
+                .map(BaoCaoMapper::mapToBaoCaoDto)
+                .collect(Collectors.toList());
+    }
+
+    public long getMaxBaoCao() {
+        return baoCaoRepository.count();
+    }
+
+    @Override
+    public List<BaoCaoDto> getBaoCaosByMaNhanVien(Long maNhanVien) {
+        List<BaoCao> baoCaos = baoCaoRepository.findAllByMaNhanVien_MaNhanVien(maNhanVien);
+
+        return baoCaos.stream()
+                .map(BaoCaoMapper::mapToBaoCaoDto)
+                .collect(Collectors.toList());
+    }
+
+    public long getMaxBaoCaoByMaNhanVien(NhanVien maNhanVien) {
+        return baoCaoRepository.countByMaNhanVien(maNhanVien);
     }
 }
